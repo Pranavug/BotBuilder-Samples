@@ -1,4 +1,4 @@
-﻿namespace ImageCaption.Services
+namespace ImageCaption.Services
 {
     using System.IO;
     using System.Linq;
@@ -6,6 +6,8 @@
     using System.Web.Configuration;
     using Microsoft.ProjectOxford.Vision;
     using Microsoft.ProjectOxford.Vision.Contract;
+    using ImageCaption.Controllers;
+
 
     /// <summary>
     /// A wrapper around the Microsoft Cognitive Computer Vision API Service.
@@ -20,7 +22,6 @@
         /// Microsoft Computer Vision API key.
         /// </summary>
         private static readonly string ApiKey = WebConfigurationManager.AppSettings["MicrosoftVisionApiKey"];
-
         /// <summary>
         /// The set of visual features we want from the Vision API.
         /// </summary>
@@ -37,7 +38,7 @@
         /// <returns>Description if caption found, null otherwise.</returns>
         public async Task<string> GetCaptionAsync(string url)
         {
-            var client = new VisionServiceClient(ApiKey);
+            var client = new VisionServiceClient(ApiKey, apiRoot: "https://eastus.api.cognitive.microsoft.com/vision/v1.0");
             var result = await client.AnalyzeImageAsync(url, VisualFeatures);
             return ProcessAnalysisResult(result);
         }
@@ -66,6 +67,7 @@
         private static string ProcessAnalysisResult(AnalysisResult result)
         {
             string message = result?.Description?.Captions.FirstOrDefault()?.Text;
+
 
             return string.IsNullOrEmpty(message) ?
                         "Couldn't find a caption for this one" :
