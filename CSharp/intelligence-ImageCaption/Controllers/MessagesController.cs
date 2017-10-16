@@ -1,4 +1,4 @@
-﻿namespace ImageCaption.Controllers
+namespace ImageCaption.Controllers
 {
     using System;
     using System.Diagnostics;
@@ -13,6 +13,7 @@
     using Microsoft.Bot.Connector;
     using Microsoft.ProjectOxford.Vision;
     using Services;
+    
 
     [BotAuthentication]
     public class MessagesController : ApiController
@@ -25,6 +26,7 @@
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+
             if (activity.Type == ActivityTypes.Message)
             {
                 var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -72,6 +74,7 @@
                 // you should set the JwtToken of your bot as the authorization header for the GET request your bot initiates to fetch the image.
                 // https://github.com/Microsoft/BotBuilder/issues/662
                 var uri = new Uri(imageAttachment.ContentUrl);
+                
                 if (uri.Host.EndsWith("skype.com") && uri.Scheme == "https")
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await GetTokenAsync(connector));
@@ -146,11 +149,13 @@
             throw new ArgumentException("The activity doesn't contain a valid image attachment or an image URL.");
         }
 
-        /// <summary>
-        /// Handles the system activity.
-        /// </summary>
-        /// <param name="activity">The activity.</param>
-        /// <returns>Activity</returns>
+        
+
+/// <summary>
+/// Handles the system activity.
+/// </summary>
+/// <param name="activity">The activity.</param>
+/// <returns>Activity</returns>
         private async Task<Activity> HandleSystemMessage(Activity activity)
         {
             switch (activity.Type)
@@ -170,6 +175,7 @@
                                         " and try to describe it as well as any human. Try sending me an image or an image URL.";
 
                         await connector.Conversations.ReplyToActivityAsync(response);
+
                     }
 
                     break;
@@ -182,8 +188,11 @@
                 case ActivityTypes.Ping:
                     break;
             }
-
+            d
             return null;
         }
+
+        
     }
+
 }
