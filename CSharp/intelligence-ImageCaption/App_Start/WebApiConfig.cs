@@ -1,4 +1,4 @@
-﻿namespace ImageCaption
+namespace ImageCaption
 {
     using System.Web.Http;
     using Newtonsoft.Json;
@@ -25,7 +25,7 @@
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "ImageCaption",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
         }
